@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Schedule Share App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>My Daily Schedule</h1>
+  <!-- Wrap the note and timeline in a container for exporting -->
+  <div id="schedule-container">
+    <div id="schedule">
+      <p class="note">All times are in Central Time (CT).</p>
+      <div id="timeline-container">
+        <div id="timeline">
+          <!-- Time blocks will be generated here -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <button id="export-btn">Export Image</button>
+  <button id="reset-btn">Reset Schedule</button>
+
+  <!-- Include the html2canvas library -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

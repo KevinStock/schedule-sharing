@@ -1,9 +1,11 @@
-// Generate time blocks dynamically
+// app.js
+
 const timeline = document.getElementById('timeline');
-const timeBlocks = [];
-const startHour = 9;  // 9 AM
+const timeBlocksData = [];
+const startHour = 8;  // 8 AM
 const endHour = 17;   // 5 PM
 
+// Generate time blocks data
 for (let hour = startHour; hour < endHour; hour++) {
   ['00', '30'].forEach(minute => {
     const startHour24 = hour;
@@ -29,26 +31,69 @@ for (let hour = startHour; hour < endHour; hour++) {
     const endMinuteStr = endMinute.toString().padStart(2, '0');
     const endTimeText = `${endHour12}:${endMinuteStr} ${endAmPm}`;
 
-    // Create time block
-    const block = document.createElement('div');
-    block.classList.add('time-block', 'free');
-    block.dataset.time = `${startTimeText} - ${endTimeText}`;
-    block.innerText = `${startTimeText} - ${endTimeText} - Free`;
-    block.addEventListener('click', () => {
-      block.classList.toggle('busy');
-      block.classList.toggle('free');
-      const statusText = block.classList.contains('busy') ? 'Busy' : 'Free';
-      block.innerText = `${startTimeText} - ${endTimeText} - ${statusText}`;
-      saveSchedule();
+    // Save time block data
+    timeBlocksData.push({
+      startTimeText,
+      endTimeText,
+      busy: false
     });
-    timeline.appendChild(block);
-    timeBlocks.push(block);
   });
+}
+
+// Render time blocks
+function renderTimeBlocks() {
+  timeline.innerHTML = ''; // Clear existing blocks
+  let i = 0;
+  while (i < timeBlocksData.length) {
+    if (timeBlocksData[i].busy) {
+      // Merge consecutive busy blocks
+      let start = i;
+      let end = i;
+      while (end + 1 < timeBlocksData.length && timeBlocksData[end + 1].busy) {
+        end++;
+      }
+      const block = document.createElement('div');
+      block.classList.add('time-block', 'busy');
+      block.innerText = `${timeBlocksData[start].startTimeText} - ${timeBlocksData[end].endTimeText} - Busy`;
+      block.style.gridRow = `${start + 1} / ${end + 2}`;
+
+      // Capture the current values of start and end
+      const startIndex = start;
+      const endIndex = end;
+
+      block.addEventListener('click', () => {
+        for (let j = startIndex; j <= endIndex; j++) {
+          timeBlocksData[j].busy = false;
+        }
+        saveSchedule();
+        renderTimeBlocks();
+      });
+      timeline.appendChild(block);
+      i = end + 1;
+    } else {
+      // Free block
+      const block = document.createElement('div');
+      block.classList.add('time-block', 'free');
+      block.innerText = `${timeBlocksData[i].startTimeText} - ${timeBlocksData[i].endTimeText} - Free`;
+      block.style.gridRow = `${i + 1} / ${i + 2}`;
+
+      // Capture the current value of i
+      const index = i;
+
+      block.addEventListener('click', () => {
+        timeBlocksData[index].busy = true;
+        saveSchedule();
+        renderTimeBlocks();
+      });
+      timeline.appendChild(block);
+      i++;
+    }
+  }
 }
 
 // Save schedule to LocalStorage
 function saveSchedule() {
-  const schedule = timeBlocks.map(block => block.classList.contains('busy'));
+  const schedule = timeBlocksData.map(block => block.busy);
   localStorage.setItem('schedule', JSON.stringify(schedule));
 }
 
@@ -57,14 +102,19 @@ function loadSchedule() {
   const schedule = JSON.parse(localStorage.getItem('schedule'));
   if (schedule) {
     schedule.forEach((isBusy, index) => {
-      const block = timeBlocks[index];
-      const timeRange = block.dataset.time;
-      const statusText = isBusy ? 'Busy' : 'Free';
-      block.classList.toggle('busy', isBusy);
-      block.classList.toggle('free', !isBusy);
-      block.innerText = `${timeRange} - ${statusText}`;
+      timeBlocksData[index].busy = isBusy;
     });
   }
+  renderTimeBlocks();
+}
+
+// Reset schedule
+function resetSchedule() {
+  timeBlocksData.forEach(block => {
+    block.busy = false;
+  });
+  saveSchedule();
+  renderTimeBlocks();
 }
 
 // Generate image of the schedule
@@ -79,16 +129,7 @@ function generateImage() {
 }
 
 document.getElementById('export-btn').addEventListener('click', generateImage);
-
-document.getElementById('reset-btn').addEventListener('click', () => {
-  timeBlocks.forEach(block => {
-    block.classList.remove('busy');
-    block.classList.add('free');
-    const timeRange = block.dataset.time;
-    block.innerText = `${timeRange} - Free`;
-  });
-  saveSchedule();
-});
+document.getElementById('reset-btn').addEventListener('click', resetSchedule);
 
 // Load the schedule on page load
 window.onload = loadSchedule;

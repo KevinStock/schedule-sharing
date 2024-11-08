@@ -128,8 +128,25 @@ function generateImage() {
   });
 }
 
+// app.js
+
+// Function to set the current date
+function setCurrentDate() {
+  const dateElement = document.getElementById('current-date');
+  const now = new Date();
+  const weekday = now.toLocaleDateString('en-US', { weekday: 'long' });
+  const day = now.getDate();
+  const month = now.toLocaleDateString('en-US', { month: 'long' });
+  const year = now.getFullYear();
+  const formattedDate = `${weekday}, ${day} ${month} ${year}`;
+  dateElement.innerText = formattedDate;
+}
+
 document.getElementById('export-btn').addEventListener('click', generateImage);
 document.getElementById('reset-btn').addEventListener('click', resetSchedule);
 
-// Load the schedule on page load
-window.onload = loadSchedule;
+// Load the schedule and set the date on page load
+window.onload = function() {
+  loadSchedule();
+  setCurrentDate();
+};

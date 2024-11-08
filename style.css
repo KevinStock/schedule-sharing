@@ -33,7 +33,6 @@ h1 {
 }
 
 #timeline {
-  width: 225px;
   display: grid;
   grid-template-rows: repeat(18, 50px);
 }

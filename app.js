@@ -128,19 +128,31 @@ function generateImage() {
   });
 }
 
-// app.js
-
 // Function to set the current date
-function setCurrentDate() {
+function setCurrentDate(selectedDate) {
   const dateElement = document.getElementById('current-date');
-  const now = new Date();
-  const weekday = now.toLocaleDateString('en-US', { weekday: 'long' });
-  const day = now.getDate();
-  const month = now.toLocaleDateString('en-US', { month: 'long' });
-  const year = now.getFullYear();
-  const formattedDate = `${weekday}, ${day} ${month} ${year}`;
+  let date;
+  if (selectedDate) {
+    // Parse the selected date components
+    const [year, month, day] = selectedDate.split('-');
+    date = new Date(year, month - 1, day); // Months are 0-indexed
+  } else {
+    date = new Date();
+  }
+  const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+  const formattedDate = date.toLocaleDateString('en-US', options);
   dateElement.innerText = formattedDate;
 }
+
+// Event listener for the date picker
+document.getElementById('date-picker').addEventListener('change', (event) => {
+  const selectedDate = event.target.value;
+  setCurrentDate(selectedDate);
+});
+
+// Set date picker's default value to today
+const today = new Date().toISOString().split('T')[0];
+document.getElementById('date-picker').value = today;
 
 document.getElementById('export-btn').addEventListener('click', generateImage);
 document.getElementById('reset-btn').addEventListener('click', resetSchedule);

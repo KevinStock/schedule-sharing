@@ -1,5 +1,3 @@
-// app.js
-
 const timeline = document.getElementById('timeline');
 const timeBlocksData = [];
 const startHour = 8;  // 8 AM

@@ -149,7 +149,9 @@ document.getElementById('date-picker').addEventListener('change', (event) => {
 });
 
 // Set date picker's default value to today
-const today = new Date().toISOString().split('T')[0];
+const today = new Date().toLocaleDateString('en-CA', {
+  timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
+});
 document.getElementById('date-picker').value = today;
 
 document.getElementById('export-btn').addEventListener('click', generateImage);

@@ -118,11 +118,15 @@ function resetSchedule() {
 // Generate image of the schedule
 function generateImage() {
   const scheduleElement = document.getElementById('schedule');
-  html2canvas(scheduleElement, { backgroundColor: null }).then(canvas => {
+  // Temporarily set the background to white
+  scheduleElement.style.backgroundColor = '#ffffff';
+  html2canvas(scheduleElement, { backgroundColor: '#ffffff' }).then(canvas => {
     const link = document.createElement('a');
     link.download = 'schedule.png';
     link.href = canvas.toDataURL();
     link.click();
+    // Revert the background color after capturing
+    scheduleElement.style.backgroundColor = '';
   });
 }
 

@@ -158,11 +158,28 @@ const today = new Date().toLocaleDateString('en-CA', {
 });
 document.getElementById('date-picker').value = today;
 
+// Function to toggle dark mode
+function toggleDarkMode() {
+  document.body.classList.toggle('dark-mode');
+  const isDarkMode = document.body.classList.contains('dark-mode');
+  localStorage.setItem('darkMode', isDarkMode);
+}
+
+// Load dark mode preference from localStorage
+function loadDarkModePreference() {
+  const isDarkMode = JSON.parse(localStorage.getItem('darkMode'));
+  if (isDarkMode) {
+    document.body.classList.add('dark-mode');
+  }
+}
+
+document.getElementById('dark-mode-toggle').addEventListener('click', toggleDarkMode);
 document.getElementById('export-btn').addEventListener('click', generateImage);
 document.getElementById('reset-btn').addEventListener('click', resetSchedule);
 
-// Load the schedule and set the date on page load
+// Load the schedule, set the date, and load dark mode preference on page load
 window.onload = function() {
   loadSchedule();
   setCurrentDate();
+  loadDarkModePreference();
 };

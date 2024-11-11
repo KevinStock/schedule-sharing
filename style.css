@@ -2,6 +2,13 @@ body {
   font-family: Arial, sans-serif;
   margin: 20px;
   text-align: center;
+  background-color: #fff;
+  color: #000;
+}
+
+body.dark-mode {
+  background-color: #121212;
+  color: #e0e0e0;
 }
 
 h1 {
@@ -15,6 +22,10 @@ h1 {
   text-align: center; /* Center the note text */
 }
 
+body.dark-mode .note {
+  color: #bbb;
+}
+
 #schedule-container {
   display: flex;
   justify-content: center;
@@ -26,6 +37,12 @@ h1 {
   border: 1px solid #ccc;
   padding: 20px;
   box-sizing: border-box;
+  background-color: #fff;
+}
+
+body.dark-mode #schedule {
+  border-color: #444;
+  background-color: #1e1e1e;
 }
 
 #timeline-container {
@@ -50,6 +67,10 @@ h1 {
   grid-column: 1 / -1; /* Span full width */
 }
 
+body.dark-mode .time-block {
+  border-color: #444;
+}
+
 .time-block:last-child {
   border-bottom: none;
 }
@@ -59,17 +80,21 @@ h1 {
   color: #000;
 }
 
+body.dark-mode .time-block.free {
+  background-color: #2e2e2e;
+  color: #e0e0e0;
+}
+
 .time-block.busy {
   background-color: #007bff;
   color: #fff;
 }
 
-/* Remove borders between merged blocks */
-.time-block.busy:not(:last-child) {
-  border-bottom: none;
+body.dark-mode .time-block.busy {
+  background-color: #0056b3;
 }
 
-#export-btn, #reset-btn {
+#export-btn, #reset-btn, #dark-mode-toggle {
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;

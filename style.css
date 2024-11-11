@@ -105,3 +105,52 @@ body.dark-mode .time-block.busy {
   padding: 5px;
   font-size: 16px;
 }
+
+/* Media Queries for Mobile Responsiveness */
+@media (max-width: 768px) {
+  body {
+    margin: 10px;
+  }
+
+  #schedule {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .time-block {
+    font-size: 14px;
+    padding: 0 5px;
+  }
+
+  #export-btn, #reset-btn, #dark-mode-toggle {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
+  #date-picker {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 24px;
+  }
+
+  .note {
+    font-size: 12px;
+  }
+
+  .time-block {
+    font-size: 12px;
+  }
+
+  #export-btn, #reset-btn, #dark-mode-toggle {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  #date-picker {
+    font-size: 12px;
+  }
+}

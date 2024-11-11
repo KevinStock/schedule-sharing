@@ -173,6 +173,46 @@ function loadDarkModePreference() {
   }
 }
 
+// Generate a shareable link
+function generateShareableLink() {
+  const schedule = JSON.stringify(timeBlocksData);
+  const encodedSchedule = encodeURIComponent(schedule);
+  const baseUrl = window.location.href.split('?')[0];
+  const shareableLink = `${baseUrl}?schedule=${encodedSchedule}`;
+  return shareableLink;
+}
+
+// Load schedule from URL if available
+function loadScheduleFromUrl() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const encodedSchedule = urlParams.get('schedule');
+  if (encodedSchedule) {
+    const schedule = JSON.parse(decodeURIComponent(encodedSchedule));
+    schedule.forEach((block, index) => {
+      timeBlocksData[index].busy = block.busy;
+    });
+    renderTimeBlocks();
+  }
+}
+
+// Copy shareable link to clipboard
+function copyShareableLink() {
+  const shareableLink = generateShareableLink();
+  navigator.clipboard.writeText(shareableLink).then(() => {
+    alert('Shareable link copied to clipboard!');
+  });
+}
+
+// Share link via email
+function shareViaEmail() {
+  const shareableLink = generateShareableLink();
+  const subject = encodeURIComponent('Check out my schedule');
+  const body = encodeURIComponent(`Here is my schedule: ${shareableLink}`);
+  window.location.href = `mailto:?subject=${subject}&body=${body}`;
+}
+
+document.getElementById('copy-link-btn').addEventListener('click', copyShareableLink);
+document.getElementById('email-link-btn').addEventListener('click', shareViaEmail);
 document.getElementById('dark-mode-toggle').addEventListener('click', toggleDarkMode);
 document.getElementById('export-btn').addEventListener('click', generateImage);
 document.getElementById('reset-btn').addEventListener('click', resetSchedule);
@@ -182,4 +222,5 @@ window.onload = function() {
   loadSchedule();
   setCurrentDate();
   loadDarkModePreference();
+  loadScheduleFromUrl();
 };

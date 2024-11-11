@@ -94,7 +94,7 @@ body.dark-mode .time-block.busy {
   background-color: #0056b3;
 }
 
-#export-btn, #reset-btn, #dark-mode-toggle {
+#export-btn, #reset-btn, #dark-mode-toggle, #copy-link-btn, #email-link-btn {
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
@@ -122,9 +122,11 @@ body.dark-mode .time-block.busy {
     padding: 0 5px;
   }
 
-  #export-btn, #reset-btn, #dark-mode-toggle {
-    padding: 8px 16px;
-    font-size: 14px;
+  #export-btn, #reset-btn, #dark-mode-toggle, #copy-link-btn, #email-link-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 5px;
   }
 
   #date-picker {
@@ -145,7 +147,7 @@ body.dark-mode .time-block.busy {
     font-size: 12px;
   }
 
-  #export-btn, #reset-btn, #dark-mode-toggle {
+  #export-btn, #reset-btn, #dark-mode-toggle #copy-link-btn, #email-link-btn {
     padding: 6px 12px;
     font-size: 12px;
   }
